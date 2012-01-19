@@ -100,8 +100,11 @@ class LaunchForm(forms.SelfHandlingForm):
     device_name = forms.CharField(label=_("Device Name"),
                                   required=False,
                                   initial="/dev/vda")
-    delete_on_terminate = forms.BooleanField(label=_("Delete on Terminate"),
-                                             initial=False)
+    delete_on_terminate = forms.BooleanField(
+            label=_("Delete on Terminate"),
+            initial=False,
+            required=False,
+            help_text=_("Delete volume on instance termiante"))
 
     def __init__(self, *args, **kwargs):
         flavor_list = kwargs.pop('flavor_list')
@@ -121,16 +124,15 @@ class LaunchForm(forms.SelfHandlingForm):
                         data['delete_on_terminate']))}
             else:
                 dev_spec = None
-            import pdb; pdb.set_trace()
 
-            #api.server_create(request,
-            #                  data['name'],
-            #                  data['image_id'],
-            #                  data['flavor'],
-            #                  data.get('keypair'),
-            #                  normalize_newlines(data.get('user_data')),
-            #                  data.get('security_groups'),
-            #                  dev_spec)
+            api.server_create(request,
+                              data['name'],
+                              data['image_id'],
+                              data['flavor'],
+                              data.get('keypair'),
+                              normalize_newlines(data.get('user_data')),
+                              data.get('security_groups'),
+                              dev_spec)
             messages.success(request,
                          _('Instance "%s" launched.') % data["name"])
         except:

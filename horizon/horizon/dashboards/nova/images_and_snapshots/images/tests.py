@@ -119,7 +119,7 @@ class ImageViewTests(test.BaseViewTests):
         USER_DATA = 'userData'
         volume = self.volumes[0].id
         device_name = '/dev/vda'
-        BLOCK_DEVICE_MAPPING = {device_name: "1"}
+        BLOCK_DEVICE_MAPPING = {device_name: "1:::False"}
 
         form_data = {'method': 'LaunchForm',
                      'flavor': FLAVOR_ID,

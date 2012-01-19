@@ -17,6 +17,7 @@ horizon.addInitFunction(function() {
           var disclosureElement = $("<div />").addClass("volume_boot_disclosure").text("Boot From Volume");
           var volumeContainer = volumeField.parent().parent();
           var deviceContainer = $("#id_device_name").parent().parent();
+          var deleteOnTermContainer = $("#id_delete_on_terminate").parent().parent();
 
           volumeContainer.before(disclosureElement);
 
@@ -25,15 +26,18 @@ horizon.addInitFunction(function() {
               disclosureElement.addClass("on");
               volumeContainer.removeClass("hide");
               deviceContainer.removeClass("hide");
+              deleteOnTermContainer.removeClass("hide");
             } else {
               disclosureElement.removeClass("on");
               volumeContainer.addClass("hide");
               deviceContainer.addClass("hide");
+              deleteOnTermContainer.addClass("hide");
             }
           });
 
           volumeContainer.addClass("hide");
           deviceContainer.addClass("hide");
+          deleteOnTermContainer.addClass("hide");
         }
       }
     });
