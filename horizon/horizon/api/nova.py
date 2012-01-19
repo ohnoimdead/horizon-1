@@ -256,12 +256,12 @@ def keypair_list(request):
     return [KeyPair(key) for key in novaclient(request).keypairs.list()]
 
 
-def server_create(request, name, image, flavor,
-                           key_name, user_data, security_groups):
+def server_create(request, name, image, flavor, key_name,
+                  user_data, security_groups, block_device_mapping):
     return Server(novaclient(request).servers.create(
             name, image, flavor, userdata=user_data,
-            security_groups=security_groups,
-            key_name=key_name), request)
+            security_groups=security_groups, key_name=key_name,
+            block_device_mapping=block_device_mapping), request)
 
 
 def server_delete(request, instance):

@@ -29,7 +29,6 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.utils.text import normalize_newlines
 from django.utils.translation import ugettext as _
-from glance.common import exception as glance_exception
 
 from horizon import api
 from horizon import exceptions
@@ -53,13 +52,7 @@ class UpdateImageForm(forms.SelfHandlingForm):
     def handle(self, request, data):
         # TODO add public flag to image meta properties
         image_id = data['image_id']
-        error_retrieving = _('Unable to retrieve image "%s".')
         error_updating = _('Unable to update image "%s".')
-
-        try:
-            image = api.image_get_meta(request, image_id)
-        except:
-            exceptions.handle(request, error_retrieving % image_id)
 
         meta = {'is_public': True,
                 'disk_format': data['disk_format'],
@@ -101,27 +94,41 @@ class LaunchForm(forms.SelfHandlingForm):
                                 widget=forms.CheckboxSelectMultiple(),
                                 help_text=_("Launch instance in these "
                                             "security groups."))
+    volume = forms.ChoiceField(label=_("Volume"),
+                               required=False,
+                               help_text=_("Volume to boot from."))
+    device_name = forms.CharField(label=_("Device Name"),
+                                  required=False,
+                                  initial="/dev/vda")
 
     def __init__(self, *args, **kwargs):
         flavor_list = kwargs.pop('flavor_list')
         keypair_list = kwargs.pop('keypair_list')
         security_group_list = kwargs.pop('security_group_list')
+        volume_list = kwargs.pop('volume_list')
         super(LaunchForm, self).__init__(*args, **kwargs)
         self.fields['flavor'].choices = flavor_list
         self.fields['keypair'].choices = keypair_list
         self.fields['security_groups'].choices = security_group_list
+        self.fields['volume'].choices = volume_list
 
     def handle(self, request, data):
         try:
+            if(len(data['volume']) > 0):
+                dev_spec = {data['device_name']: data['volume']}
+            else:
+                dev_spec = None
+
             api.server_create(request,
                               data['name'],
                               data['image_id'],
                               data['flavor'],
                               data.get('keypair'),
                               normalize_newlines(data.get('user_data')),
-                              data.get('security_groups'))
+                              data.get('security_groups'),
+                              dev_spec)
             messages.success(request,
-                             _('Instance "%s" launched.') % data["name"])
+                         _('Instance "%s" launched.') % data["name"])
         except:
             redirect = reverse("horizon:nova:images_and_snapshots:index")
             exceptions.handle(request,
