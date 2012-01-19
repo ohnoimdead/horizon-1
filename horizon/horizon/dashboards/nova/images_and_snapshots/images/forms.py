@@ -100,6 +100,8 @@ class LaunchForm(forms.SelfHandlingForm):
     device_name = forms.CharField(label=_("Device Name"),
                                   required=False,
                                   initial="/dev/vda")
+    delete_on_terminate = forms.BooleanField(label=_("Delete on Terminate"),
+                                             initial=False)
 
     def __init__(self, *args, **kwargs):
         flavor_list = kwargs.pop('flavor_list')
@@ -115,18 +117,20 @@ class LaunchForm(forms.SelfHandlingForm):
     def handle(self, request, data):
         try:
             if(len(data['volume']) > 0):
-                dev_spec = {data['device_name']: data['volume']}
+                dev_spec = {data['device_name']: ("%s:::%s" % (data['volume'],
+                        data['delete_on_terminate']))}
             else:
                 dev_spec = None
+            import pdb; pdb.set_trace()
 
-            api.server_create(request,
-                              data['name'],
-                              data['image_id'],
-                              data['flavor'],
-                              data.get('keypair'),
-                              normalize_newlines(data.get('user_data')),
-                              data.get('security_groups'),
-                              dev_spec)
+            #api.server_create(request,
+            #                  data['name'],
+            #                  data['image_id'],
+            #                  data['flavor'],
+            #                  data.get('keypair'),
+            #                  normalize_newlines(data.get('user_data')),
+            #                  data.get('security_groups'),
+            #                  dev_spec)
             messages.success(request,
                          _('Instance "%s" launched.') % data["name"])
         except:
