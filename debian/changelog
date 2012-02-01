@@ -1,0 +1,72 @@
+horizon (2012.1~e3~20120120.1235-0ubuntu2) UNRELEASED; urgency=low
+
+  * debian/conffiles: Don't wipe out local_settings.py on upgrade.
+    (LP: #914257) 
+
+ -- Chuck Short <zulcss@ubuntu.com>  Mon, 23 Jan 2012 12:45:26 -0500
+
+horizon (2012.1~e3~20120120.1235-0ubuntu1) precise; urgency=low
+
+  * New upstream release. 
+
+ -- Chuck Short <zulcss@ubuntu.com>  Fri, 20 Jan 2012 14:51:21 -0500
+
+horizon (2012.1~e3~20120113.1213-0ubuntu1) precise; urgency=low
+
+  [Chuck Short]
+  * Removed python-django-horizon.postinst, let dh_python2 generate instead
+    since python-support is not a dependency. 
+  * Dropped python-openstack-compute from debian/control.
+  * Clean up debian/control.
+  * Restart apache when installing the openstack dashboard.
+    (LP: #905527)
+  * Dropped python-coverage not needed.
+  * Added transitional package for people updating from oneiric.
+  * Rediffed patches.
+  * More linitian fixes.
+
+  [Robie Basak]
+  * debian/control: put python-django-horizon in Python section.
+  * debian/control: lintian fixes (LP: #899427):
+    - Put python-django-horizon in Python section
+    - Remove definite article from Description
+  * debian/copyright: fix dep5 syntax.
+  * debian/python-django-horizon.lintian-overrides: override for template shell
+    script.
+
+ -- Chuck Short <zulcss@ubuntu.com>  Fri, 13 Jan 2012 10:59:49 +0100
+
+horizon (2012.1~e2-0ubuntu2) precise; urgency=low
+
+  * Rebuild to drop dependencies on python2.6.
+
+ -- Matthias Klose <doko@ubuntu.com>  Mon, 02 Jan 2012 10:58:49 +0100
+
+horizon (2012.1~e2-0ubuntu1) precise; urgency=low
+
+  * New upstream release (LP: #904039)
+  * debian/control: Update build-depends.
+  * debian/watch: Fix to fetch from Launchpad ad well.
+  
+ -- Chuck Short <zulcss@ubuntu.com>  Fri, 16 Dec 2011 16:34:56 -0500
+
+horizon (2012.1~e2~20111209.1104-0ubuntu1) precise; urgency=low
+
+  * New upstream release.
+  * Refreshed patches.
+  * debian/docs: Removed README
+
+ -- Chuck Short <zulcss@ubuntu.com>  Fri, 09 Dec 2011 16:18:55 -0500
+
+horizon (2012.1~e1-0ubuntu~e2.20111201.1077.1) precise; urgency=low
+
+  [ Chuck Short ]
+  * Initial release.
+
+  [ Jamie Strandboge ]
+  * debian/patches/git-2012.1~e2~20111201.1077.patch: use 2012.1~e1 release
+    tarball and apply all git commits up to 2012.1~e2~20111201.1077. This
+    can be dropped in 2012.1~e2.
+  * rename python-djanog-horizon.postinst to python-django-horizon.postinst
+
+ -- Jamie Strandboge <jamie@ubuntu.com>  Fri, 02 Dec 2011 16:21:52 -0600
