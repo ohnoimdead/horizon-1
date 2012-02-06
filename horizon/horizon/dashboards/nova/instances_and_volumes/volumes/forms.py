@@ -82,3 +82,20 @@ class AttachForm(forms.SelfHandlingForm):
                            _('Error attaching volume: %s') % e.message)
         return shortcuts.redirect(
                             "horizon:nova:instances_and_volumes:index")
+
+
+class CreateSnapshotForm(forms.SelfHandlingForm):
+    name = forms.CharField(max_length="255", label="Snapshot Name")
+    description = forms.CharField(widget=forms.Textarea,
+            label=_("Description"), required=False)
+
+    def handle(self, request, data):
+        try:
+            message = 'Creating volume snapshot "%s"' % data['name']
+            LOG.info(message)
+            messages.info(request, message)
+        except novaclient_exceptions.ClientException, e:
+            LOG.exception("ClientException in CreateSnapshot")
+            messages.error(request,
+                           _('Error Creating Volume Snapshot: %s') % e.message)
+        return shortcuts.redirect("horizon:nova:instances_and_volumes:index")

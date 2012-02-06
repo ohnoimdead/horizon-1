@@ -63,6 +63,11 @@ class CreateView(forms.ModalFormView):
     template_name = 'nova/instances_and_volumes/volumes/create.html'
 
 
+class CreateSnapshotView(forms.ModalFormView):
+    form_class = CreateForm
+    template_name = 'nova/instances_and_volumes/volumes/create_snapshot.html'
+
+
 class EditAttachmentsView(tables.DataTableView):
     table_class = AttachmentsTable
     template_name = 'nova/instances_and_volumes/volumes/attach.html'

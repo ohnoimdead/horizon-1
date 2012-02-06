@@ -55,6 +55,15 @@ class EditAttachments(tables.LinkAction):
         return volume.status in ("available", "in-use")
 
 
+class CreateSnapshot(tables.LinkAction):
+    name = "snapshots"
+    verbose_name = _("Create Snapshot")
+    url = "horizon:nova:instances_and_volumes:volumes:create_snapshot"
+
+    def allowed(self, request, volume=None):
+        return volume.status in ("available", "in-use")
+
+
 def get_size(volume):
     return _("%s GB") % volume.size
 
@@ -98,7 +107,7 @@ class VolumesTable(tables.DataTable):
         name = "volumes"
         verbose_name = _("Volumes")
         table_actions = (CreateVolume, DeleteVolume,)
-        row_actions = (EditAttachments, DeleteVolume,)
+        row_actions = (EditAttachments, CreateSnapshot, DeleteVolume)
 
 
 class DetachVolume(tables.BatchAction):
