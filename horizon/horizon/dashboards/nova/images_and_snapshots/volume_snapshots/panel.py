@@ -22,9 +22,9 @@ import horizon
 from horizon.dashboards.nova import dashboard
 
 
-class Snapshots(horizon.Panel):
-    name = "Instance Snapshots"
-    slug = 'snapshots'
+class VolumeSnapshots(horizon.Panel):
+    name = "Volume Snapshots"
+    slug = 'volume_snapshots'
 
 
-dashboard.Nova.register(Snapshots)
+dashboard.Nova.register(VolumeSnapshots)

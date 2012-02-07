@@ -1,10 +1,6 @@
 # vim: tabstop=4 shiftwidth=4 softtabstop=4
 
-# Copyright 2011 United States Government as represented by the
-# Administrator of the National Aeronautics and Space Administration.
-# All Rights Reserved.
-#
-# Copyright 2011 Nebula, Inc.
+# Copyright 2012 Nebula, Inc.
 #
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
 #    not use this file except in compliance with the License. You may obtain
@@ -18,13 +14,19 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import horizon
-from horizon.dashboards.nova import dashboard
+import logging
+
+from django.utils.translation import ugettext as _
+
+from horizon import tables
 
 
-class Snapshots(horizon.Panel):
-    name = "Instance Snapshots"
-    slug = 'snapshots'
+LOG = logging.getLogger(__name__)
 
 
-dashboard.Nova.register(Snapshots)
+class VolumeSnapshotsTable(tables.DataTable):
+    name = tables.Column("name")
+
+    class Meta:
+        name = "volume_snapshots"
+        verbose_name = _("Volume Snapshots")

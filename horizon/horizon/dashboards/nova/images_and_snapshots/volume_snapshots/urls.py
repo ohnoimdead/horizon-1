@@ -18,13 +18,13 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-import horizon
-from horizon.dashboards.nova import dashboard
+from django.conf.urls.defaults import patterns, url
+
+from .views import CreateView
 
 
-class Snapshots(horizon.Panel):
-    name = "Instance Snapshots"
-    slug = 'snapshots'
-
-
-dashboard.Nova.register(Snapshots)
+#urlpatterns = patterns('',
+#    url(r'^(?P<instance_id>[^/]+)/create',
+#        CreateView.as_view(),
+#        name='create')
+#)
