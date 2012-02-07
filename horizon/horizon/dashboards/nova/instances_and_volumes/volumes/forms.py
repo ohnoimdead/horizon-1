@@ -91,6 +91,7 @@ class CreateSnapshotForm(forms.SelfHandlingForm):
 
     def handle(self, request, data):
         try:
+            # TODO (tres): Create the volume snapshot.
             message = 'Creating volume snapshot "%s"' % data['name']
             LOG.info(message)
             messages.info(request, message)
@@ -98,4 +99,4 @@ class CreateSnapshotForm(forms.SelfHandlingForm):
             LOG.exception("ClientException in CreateSnapshot")
             messages.error(request,
                            _('Error Creating Volume Snapshot: %s') % e.message)
-        return shortcuts.redirect("horizon:nova:instances_and_volumes:index")
+        return shortcuts.redirect("horizon:nova:images_and_snapshots:index")

@@ -27,6 +27,6 @@ urlpatterns = patterns(
         name='attach'),
     url(r'^(?P<volume_id>[^/]+)/create_snapshot/$',
         CreateSnapshotView.as_view(),
-        name='attach'),
+        name='create_snapshot'),
     url(r'^(?P<volume_id>[^/]+)/detail/$', 'detail', name='detail'),
 )

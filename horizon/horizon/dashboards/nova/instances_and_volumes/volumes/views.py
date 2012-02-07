@@ -29,7 +29,7 @@ from horizon import api
 from horizon import exceptions
 from horizon import forms
 from horizon import tables
-from .forms import CreateForm, AttachForm
+from .forms import CreateForm, AttachForm, CreateSnapshotForm
 from .tables import AttachmentsTable
 
 
@@ -64,8 +64,11 @@ class CreateView(forms.ModalFormView):
 
 
 class CreateSnapshotView(forms.ModalFormView):
-    form_class = CreateForm
+    form_class = CreateSnapshotForm
     template_name = 'nova/instances_and_volumes/volumes/create_snapshot.html'
+
+    def get_context_data(self, **kwargs):
+        return {'volume_id': kwargs['volume_id']}
 
 
 class EditAttachmentsView(tables.DataTableView):
