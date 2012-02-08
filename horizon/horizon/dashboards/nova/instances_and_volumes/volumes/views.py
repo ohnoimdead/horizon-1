@@ -70,6 +70,9 @@ class CreateSnapshotView(forms.ModalFormView):
     def get_context_data(self, **kwargs):
         return {'volume_id': kwargs['volume_id']}
 
+    def get_initial(self):
+        return {'volume_id': self.kwargs["volume_id"]}
+
 
 class EditAttachmentsView(tables.DataTableView):
     table_class = AttachmentsTable

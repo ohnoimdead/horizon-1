@@ -89,9 +89,19 @@ class CreateSnapshotForm(forms.SelfHandlingForm):
     description = forms.CharField(widget=forms.Textarea,
             label=_("Description"), required=False)
 
+    def __init__(self, *args, **kwargs):
+        super(CreateSnapshotForm, self).__init__(*args, **kwargs)
+
+        # populate volume_id
+        volume_id = kwargs.get('initial', {}).get('volume_id', [])
+        self.fields['volume_id'] = forms.CharField(widget=forms.HiddenInput(),
+                                                   initial=volume_id)
+
     def handle(self, request, data):
         try:
-            # TODO (tres): Create the volume snapshot.
+            api.novaclient(request).volume_snapshots.create(
+                    data['volume_id'], display_name=data['name'],
+                    display_description=data['description'])
             message = 'Creating volume snapshot "%s"' % data['name']
             LOG.info(message)
             messages.info(request, message)

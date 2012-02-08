@@ -18,15 +18,13 @@ import logging
 
 from django.utils.translation import ugettext as _
 
-from horizon import tables
+from horizon.dashboards.nova.instances_and_volumes.volumes import tables
 
 
 LOG = logging.getLogger(__name__)
 
 
-class VolumeSnapshotsTable(tables.DataTable):
-    name = tables.Column("name")
-
+class VolumeSnapshotsTable(tables.VolumesTableBase):
     class Meta:
         name = "volume_snapshots"
         verbose_name = _("Volume Snapshots")

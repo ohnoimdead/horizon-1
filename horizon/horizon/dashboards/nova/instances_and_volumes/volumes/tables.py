@@ -84,18 +84,18 @@ def get_attachment(volume):
     return safestring.mark_safe(", ".join(attachments))
 
 
-class VolumesTable(tables.DataTable):
-    name = tables.Column("displayName",
-                         verbose_name=_("Name"),
-                         link="horizon:nova:instances_and_volumes:"
-                              "volumes:detail")
+class VolumesTableBase(tables.DataTable):
+    name = tables.Column("name")
     description = tables.Column("displayDescription",
                                 verbose_name=("Description"))
     size = tables.Column(get_size, verbose_name=_("Size"))
+    status = tables.Column("status", filters=(title,))
+
+
+class VolumesTable(VolumesTableBase):
     attachments = tables.Column(get_attachment,
                                 verbose_name=_("Attachments"),
                                 empty_value=_("-"))
-    status = tables.Column("status", filters=(title,))
 
     def sanitize_id(self, obj_id):
         return int(obj_id)
