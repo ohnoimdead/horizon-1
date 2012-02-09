@@ -85,9 +85,9 @@ def get_attachment(volume):
 
 
 class VolumesTableBase(tables.DataTable):
-    name = tables.Column("name")
+    name = tables.Column("displayName", verbose_name=_("Name"))
     description = tables.Column("displayDescription",
-                                verbose_name=("Description"))
+                                verbose_name=_("Description"))
     size = tables.Column(get_size, verbose_name=_("Size"))
     status = tables.Column("status", filters=(title,))
 

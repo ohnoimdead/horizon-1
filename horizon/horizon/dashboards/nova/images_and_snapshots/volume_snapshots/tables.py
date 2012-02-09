@@ -18,13 +18,27 @@ import logging
 
 from django.utils.translation import ugettext as _
 
-from horizon.dashboards.nova.instances_and_volumes.volumes import tables
+from horizon import tables
+from ...instances_and_volumes.volumes import tables as volume_tables
 
 
 LOG = logging.getLogger(__name__)
 
 
-class VolumeSnapshotsTable(tables.VolumesTableBase):
+class DeleteVolume(tables.DeleteAction):
+    data_type_singular = _("Volume Snapshot")
+    data_type_plural = _("Volume Snaphots")
+    classes = ('danger',)
+
+    def delete(self, request, obj_id):
+        #api.volume_delete(request, obj_id)
+        pass
+
+
+class VolumeSnapshotsTable(volume_tables.VolumesTableBase):
+    volume_id = tables.Column("volumeId", verbose_name=_("Volume ID"))
+
     class Meta:
         name = "volume_snapshots"
         verbose_name = _("Volume Snapshots")
+        table_actions = (DeleteVolume,)
