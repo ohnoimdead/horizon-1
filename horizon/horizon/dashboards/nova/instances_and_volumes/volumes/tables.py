@@ -91,17 +91,17 @@ class VolumesTableBase(tables.DataTable):
     size = tables.Column(get_size, verbose_name=_("Size"))
     status = tables.Column("status", filters=(title,))
 
-
-class VolumesTable(VolumesTableBase):
-    attachments = tables.Column(get_attachment,
-                                verbose_name=_("Attachments"),
-                                empty_value=_("-"))
-
     def sanitize_id(self, obj_id):
         return int(obj_id)
 
     def get_object_display(self, obj):
         return obj.displayName
+
+
+class VolumesTable(VolumesTableBase):
+    attachments = tables.Column(get_attachment,
+                                verbose_name=_("Attachments"),
+                                empty_value=_("-"))
 
     class Meta:
         name = "volumes"

@@ -131,10 +131,10 @@ class LaunchForm(forms.SelfHandlingForm):
                     delete_on_terminate = 1
                 else:
                     delete_on_terminate = 0
-                dev_spec = {data['device_name']:
-                        ("%s:::%s" % (data['volume'], delete_on_terminate))}
+                dev_mapping = {data['device_name']:
+                        ("%s::%s" % (data['volume'], delete_on_terminate))}
             else:
-                dev_spec = None
+                dev_mapping = None
 
             api.server_create(request,
                               data['name'],
@@ -143,7 +143,7 @@ class LaunchForm(forms.SelfHandlingForm):
                               data.get('keypair'),
                               normalize_newlines(data.get('user_data')),
                               data.get('security_groups'),
-                              dev_spec,
+                              dev_mapping,
                               instance_count=int(data.get('count')))
             messages.success(request,
                          _('Instance "%s" launched.') % data["name"])
