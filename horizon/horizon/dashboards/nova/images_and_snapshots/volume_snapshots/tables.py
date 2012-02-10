@@ -32,7 +32,7 @@ class DeleteVolumeSnapshot(tables.DeleteAction):
     classes = ('danger',)
 
     def delete(self, request, obj_id):
-        api.novaclient(request).volume_snapshots.delete(obj_id)
+        api.volume_snapshot_delete(request, obj_id)
 
 
 class VolumeSnapshotsTable(volume_tables.VolumesTableBase):

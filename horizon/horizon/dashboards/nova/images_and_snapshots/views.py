@@ -63,7 +63,7 @@ class IndexView(tables.MultiTableView):
 
     def get_volume_snapshots_data(self):
         try:
-            snapshots = api.novaclient(self.request).volume_snapshots.list()
+            snapshots = api.volume_snapshot_list(self.request)
         except:
             snapshots = []
             exceptions.handle(self.request, _("Unable to retrieve "
