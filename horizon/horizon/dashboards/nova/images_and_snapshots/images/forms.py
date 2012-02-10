@@ -99,7 +99,7 @@ class LaunchForm(forms.SelfHandlingForm):
                                 widget=forms.CheckboxSelectMultiple(),
                                 help_text=_("Launch instance in these "
                                             "security groups."))
-    volume = forms.ChoiceField(label=_("Volume"),
+    volume = forms.ChoiceField(label=_("Volume or Volume Snapshot"),
                                required=False,
                                help_text=_("Volume to boot from."))
     device_name = forms.CharField(label=_("Device Name"),

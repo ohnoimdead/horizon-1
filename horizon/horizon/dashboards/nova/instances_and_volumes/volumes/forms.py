@@ -99,9 +99,11 @@ class CreateSnapshotForm(forms.SelfHandlingForm):
 
     def handle(self, request, data):
         try:
-            api.novaclient(request).volume_snapshots.create(
-                    data['volume_id'], display_name=data['name'],
-                    display_description=data['description'])
+            api.volume_snapshot_create(request,
+                                       data['volume_id'],
+                                       data['name'],
+                                       data['description'])
+
             message = 'Creating volume snapshot "%s"' % data['name']
             LOG.info(message)
             messages.info(request, message)

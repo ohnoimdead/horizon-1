@@ -77,7 +77,7 @@ class ImageViewTests(test.BaseViewTests):
 
         self.volume_snapshot = volume_snapshots.Snapshot(
                 volume_snapshots.SnapshotManager,
-                {'id': 1,
+                {'id': 2,
                  'displayName': 'test snapshot',
                  'displayDescription': 'test snapshot description',
                  'size': 40,
@@ -128,14 +128,14 @@ class ImageViewTests(test.BaseViewTests):
                          self.keypairs[0].name)
 
     def test_launch_post(self):
-        FLAVOR_ID = self.flavors[0].id
-        IMAGE_ID = '1'
-        keypair = self.keypairs[0].name
-        SERVER_NAME = 'serverName'
-        USER_DATA = 'userData'
-        volume = self.volumes[0].id
-        device_name = 'vda'
-        BLOCK_DEVICE_MAPPING = {device_name: "1:::0"}
+        FLAVOR_ID = unicode(self.flavors[0].id)
+        IMAGE_ID = u'1'
+        keypair = unicode(self.keypairs[0].name)
+        SERVER_NAME = u'serverName'
+        USER_DATA = u'userData'
+        volume = u'%s:vol' % self.volumes[0].id
+        device_name = u'vda'
+        BLOCK_DEVICE_MAPPING = {device_name: u"1:vol::0"}
 
         form_data = {'method': 'LaunchForm',
                      'flavor': FLAVOR_ID,
@@ -147,8 +147,7 @@ class ImageViewTests(test.BaseViewTests):
                      'tenant_id': self.TEST_TENANT,
                      'security_groups': 'default',
                      'volume': volume,
-                     'device_name': device_name
-                     }
+                     'device_name': device_name}
 
         self.mox.StubOutWithMock(api, 'image_get_meta')
         self.mox.StubOutWithMock(api, 'flavor_list')
@@ -156,7 +155,6 @@ class ImageViewTests(test.BaseViewTests):
         self.mox.StubOutWithMock(api, 'security_group_list')
         self.mox.StubOutWithMock(api, 'server_create')
         self.mox.StubOutWithMock(api, 'volume_list')
-        self.mox.StubOutWithMock(api, 'volume_snapshot_list')
 
         api.flavor_list(IsA(http.HttpRequest)).AndReturn(self.flavors)
         api.keypair_list(IsA(http.HttpRequest)).AndReturn(self.keypairs)
@@ -165,8 +163,6 @@ class ImageViewTests(test.BaseViewTests):
         api.image_get_meta(IsA(http.HttpRequest), IMAGE_ID).AndReturn(
                 self.visibleImage)
         api.volume_list(IsA(http.HttpRequest)).AndReturn(self.volumes)
-        api.volume_snapshot_list(IsA(http.HttpRequest)).AndReturn(
-                self.volume_snapshots)
         api.server_create(IsA(http.HttpRequest), SERVER_NAME,
                           str(IMAGE_ID), str(FLAVOR_ID),
                           keypair, USER_DATA, [self.security_groups[0].name],
@@ -179,9 +175,6 @@ class ImageViewTests(test.BaseViewTests):
                     reverse('horizon:nova:images_and_snapshots:images:launch',
                             args=[IMAGE_ID]),
                             form_data)
-
-        if "form" in res.context:
-            self.assertEqual(res.context['form']._errors, [])
 
         self.assertRedirectsNoFollow(res,
                  reverse('horizon:nova:instances_and_volumes:index'))
