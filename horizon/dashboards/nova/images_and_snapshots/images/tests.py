@@ -86,11 +86,14 @@ class ImageViewTests(test.TestCase):
 
         self.mox.StubOutWithMock(api, 'image_get_meta')
         self.mox.StubOutWithMock(api, 'tenant_quota_usages')
+        # Two flavor_list calls, however, flavor_list is now memoized.
+        self.mox.StubOutWithMock(api, 'flavor_list')
         self.mox.StubOutWithMock(api, 'flavor_list')
         self.mox.StubOutWithMock(api, 'keypair_list')
         self.mox.StubOutWithMock(api, 'security_group_list')
         api.image_get_meta(IsA(http.HttpRequest), image.id).AndReturn(image)
         api.tenant_quota_usages(IsA(http.HttpRequest)).AndReturn(quota_usages)
+        api.flavor_list(IsA(http.HttpRequest)).AndReturn(self.flavors.list())
         api.flavor_list(IsA(http.HttpRequest)).AndReturn(self.flavors.list())
         api.keypair_list(IsA(http.HttpRequest)).AndReturn(self.keypairs.list())
         api.security_group_list(IsA(http.HttpRequest)) \
@@ -169,6 +172,7 @@ class ImageViewTests(test.TestCase):
         self.mox.StubOutWithMock(api, 'image_get_meta')
         self.mox.StubOutWithMock(api, 'tenant_quota_usages')
         self.mox.StubOutWithMock(api, 'flavor_list')
+        self.mox.StubOutWithMock(api, 'flavor_list')
         self.mox.StubOutWithMock(api, 'keypair_list')
         self.mox.StubOutWithMock(api, 'security_group_list')
         api.image_get_meta(IsA(http.HttpRequest),
@@ -176,6 +180,7 @@ class ImageViewTests(test.TestCase):
         api.tenant_quota_usages(IsA(http.HttpRequest)).AndReturn(
                 self.quota_usages.first())
         exc = keystone_exceptions.ClientException('Failed.')
+        api.flavor_list(IsA(http.HttpRequest)).AndRaise(exc)
         api.flavor_list(IsA(http.HttpRequest)).AndRaise(exc)
         api.keypair_list(IsA(http.HttpRequest)).AndReturn(self.keypairs.list())
         api.security_group_list(IsA(http.HttpRequest)) \
@@ -194,11 +199,13 @@ class ImageViewTests(test.TestCase):
         self.mox.StubOutWithMock(api, 'image_get_meta')
         self.mox.StubOutWithMock(api, 'tenant_quota_usages')
         self.mox.StubOutWithMock(api, 'flavor_list')
+        self.mox.StubOutWithMock(api, 'flavor_list')
         self.mox.StubOutWithMock(api, 'keypair_list')
         self.mox.StubOutWithMock(api, 'security_group_list')
         api.image_get_meta(IsA(http.HttpRequest), image.id).AndReturn(image)
         api.tenant_quota_usages(IsA(http.HttpRequest)).AndReturn(
                 self.quota_usages.first())
+        api.flavor_list(IsA(http.HttpRequest)).AndReturn(self.flavors.list())
         api.flavor_list(IsA(http.HttpRequest)).AndReturn(self.flavors.list())
         exception = keystone_exceptions.ClientException('Failed.')
         api.keypair_list(IsA(http.HttpRequest)).AndRaise(exception)
@@ -273,12 +280,14 @@ class ImageViewTests(test.TestCase):
 
         self.mox.StubOutWithMock(api, 'image_get_meta')
         self.mox.StubOutWithMock(api, 'flavor_list')
+        self.mox.StubOutWithMock(api, 'flavor_list')
         self.mox.StubOutWithMock(api, 'keypair_list')
         self.mox.StubOutWithMock(api, 'security_group_list')
         self.mox.StubOutWithMock(api, 'volume_list')
         self.mox.StubOutWithMock(api, 'volume_snapshot_list')
         self.mox.StubOutWithMock(api, 'tenant_quota_usages')
 
+        api.flavor_list(IsA(http.HttpRequest)).AndReturn(self.flavors.list())
         api.flavor_list(IsA(http.HttpRequest)).AndReturn(self.flavors.list())
         api.keypair_list(IsA(http.HttpRequest)).AndReturn(self.keypairs.list())
         api.security_group_list(IsA(http.HttpRequest)) \
